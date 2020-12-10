@@ -395,10 +395,12 @@ void HT1632Class::render() {
 
 	// Write the channels in order
 	for(uint8_t c = 0; c < NUM_CHANNEL; ++c) {
-		for(uint8_t i = 0; i < ADDR_SPACE_SIZE; ++i) {
-			// Write the higher bits before the the lower bits.
-			writeData(mem[c][i] >> HT1632_WORD_LEN, HT1632_WORD_LEN); // Write the data in reverse.
-			writeData(mem[c][i], HT1632_WORD_LEN); // Write the data in reverse.
+			for(uint8_t i = ADDR_SPACE_SIZE-1; i != 0; --i) { 
+			// Write the lower bits before the higher bits for JY-MCU-3208
+			writeData(mem[c][i] >> HT1632_WORD_LEN, HT1632_WORD_LEN); // Write the data in reverse
+			writeData(mem[c][i], HT1632_WORD_LEN); // Write the data in reverse
+		}
+	}
 		}
 	}
 
